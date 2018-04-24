@@ -73,6 +73,7 @@ int main()
    * Dipslay a message
    */
   setCDKMatrixCell(myMatrix, 2, 2, "Test Message");
+  setCDKMatrixCell(myMatrix, 2, 3, "GREMLINS" );
   drawCDKMatrix(myMatrix, true);    /* required  */
 
   /* So we can see results, pause until a key is pressed. */
