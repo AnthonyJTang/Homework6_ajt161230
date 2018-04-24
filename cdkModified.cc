@@ -11,8 +11,9 @@
  */
 
 #include <iostream>
+#include <stdint.h>
 #include "cdk.h"
-
+#include <fstream>
 
 #define MATRIX_HEIGHT 5
 #define MATRIX_WIDTH 3
@@ -21,6 +22,26 @@
 
 using namespace std;
 
+//header class
+class BinaryFileHeader{
+
+public:
+  uint32_t magicNumber; //feedface I hope
+  uint32_t versionNumber;
+  uint64_t numRecords;
+
+};
+
+//create a constant for the max string length of the 
+//bin input
+const int maxRecordStringLength = 25;
+//record stream
+class BinaryFileRecord{
+public:
+  uint8_t strLength;
+  char stringBuffer[maxRecordStringLength];
+  
+};
 
 int main()
 {
@@ -60,6 +81,20 @@ int main()
 			  MATRIX_NAME_STRING, (char **) rowTitles, (char **) columnTitles, boxWidths,
 				     boxTypes, 1, 1, ' ', ROW, true, true, false);
 
+  /*
+   * open the binary file cs3377.bin
+   */
+  
+  ifstream binInFile ("cs3377.bin", ios::in | ios::binary);
+
+  if(!binInFile.is_open()){
+    cout << "Error opening the binary file. Exiting program" << endl;
+    return 0;
+  }
+
+  BinaryFileHeader *myHeader = new BinaryFileHeader();
+
+  binInFile.read((char*) myHeader, sizeof(BinaryFileHeader));
   if (myMatrix ==NULL)
     {
       printf("Error creating Matrix\n");
@@ -69,9 +104,8 @@ int main()
   /* Display the Matrix */
   drawCDKMatrix(myMatrix, true);
 
-  /*
-   * Dipslay a message
-   */
+  
+  //setCDKMatrixCell(myMatrix, 1, 1, myHeader->magicNumber);
   setCDKMatrixCell(myMatrix, 2, 2, "Test Message");
   setCDKMatrixCell(myMatrix, 2, 3, "GREMLINS" );
   drawCDKMatrix(myMatrix, true);    /* required  */
