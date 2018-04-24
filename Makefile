@@ -1,8 +1,4 @@
-#
-# UTD CS3377 CDK Example
-# Dr. Perkins
-# stephen.perkins@utdallas.edu
-#
+#Anthony Tang, ajt161230, 3377.502
 
 CXX = g++
 CXXFLAGS = -Wall -g 
