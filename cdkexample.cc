@@ -1,19 +1,23 @@
 /*
- * Usage of CDK Matrix
+ * Modified CDK file
+ *  Anthony Tang, ajt161230, 3377.502
  *
+ * (
+ * Original
  * File:   example1.cc
  * Author: Stephen Perkins
  * Email:  stephen.perkins@utdallas.edu
+ * )
  */
 
 #include <iostream>
 #include "cdk.h"
 
 
-#define MATRIX_WIDTH 4
-#define MATRIX_HEIGHT 3
+#define MATRIX_HEIGHT 5
+#define MATRIX_WIDTH 3
 #define BOX_WIDTH 15
-#define MATRIX_NAME_STRING "Test Matrix"
+#define MATRIX_NAME_STRING "Binary File Contents"
 
 using namespace std;
 
@@ -33,8 +37,8 @@ int main()
   // values you choose to set for MATRIX_WIDTH and MATRIX_HEIGHT
   // above.
 
-  const char 		*rowTitles[] = {"R0", "R1", "R2", "R3", "R4", "R5"};
-  const char 		*columnTitles[] = {"C0", "C1", "C2", "C3", "C4", "C5"};
+  const char 		*rowTitles[] = {"C0", "a", "b", "c", "d", "e"};
+  const char 		*columnTitles[] = {"C0", "a", "b", "c"};
   int		boxWidths[] = {BOX_WIDTH, BOX_WIDTH, BOX_WIDTH, BOX_WIDTH, BOX_WIDTH, BOX_WIDTH};
   int		boxTypes[] = {vMIXED, vMIXED, vMIXED, vMIXED,  vMIXED,  vMIXED};
 
@@ -52,7 +56,7 @@ int main()
   /*
    * Create the matrix.  Need to manually cast (const char**) to (char **)
   */
-  myMatrix = newCDKMatrix(cdkscreen, CENTER, CENTER, MATRIX_WIDTH, MATRIX_HEIGHT, MATRIX_WIDTH, MATRIX_HEIGHT,
+  myMatrix = newCDKMatrix(cdkscreen, CENTER, CENTER, MATRIX_HEIGHT, MATRIX_WIDTH, MATRIX_HEIGHT, MATRIX_WIDTH,
 			  MATRIX_NAME_STRING, (char **) rowTitles, (char **) columnTitles, boxWidths,
 				     boxTypes, 1, 1, ' ', ROW, true, true, false);
 
