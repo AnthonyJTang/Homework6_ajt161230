@@ -12,13 +12,17 @@
 
 #include <iostream>
 #include <stdint.h>
-#include "cdk.h"
+#include <iomanip>
+#include <stdlib.h>
 #include <fstream>
+#include <sstream>
+#include "cdk.h"
 
 #define MATRIX_HEIGHT 5
 #define MATRIX_WIDTH 3
 #define BOX_WIDTH 15
 #define MATRIX_NAME_STRING "Binary File Contents"
+
 using namespace std;
 
 //header class
@@ -30,23 +34,17 @@ public:
 
 };
 
-class BinaryFileRecord{
-public:
-  uint8_t strLength;
-  char stringBuffer[maxRecordStringLength];
-};
-
-//create a constant for the max string length of the 
-//bin input
+//constant for the char* read by record
 const int maxRecordStringLength = 25;
-//record stream
+
+//record class
 class BinaryFileRecord{
 public:
   uint8_t strLength;
   char stringBuffer[maxRecordStringLength];
-  
 };
 
+//main
 int main()
 {
 
@@ -96,13 +94,6 @@ int main()
     return 0;
   }
 
-
-  //create instances of the header and record classes to read into
-  BinaryFileHeader *myHeader = new BinaryFileHeader();
-  BinaryFileRecord *myRecord = new BinaryFileRecord();
-
-
-  binInFile.read((char*) myHeader, sizeof(BinaryFileHeader));
   if (myMatrix ==NULL)
     {
       printf("Error creating Matrix\n");
@@ -111,17 +102,28 @@ int main()
 
   /* Display the Matrix */
   drawCDKMatrix(myMatrix, true);
-
   
-  //setCDKMatrixCell(myMatrix, 1, 1, myHeader->magicNumber);
+  //create instance of header class to read
+  BinaryFileHeader *myHeader = new BinaryFileHeader();
+  binInFile.read((char*) myHeader, sizeof(BinaryFileHeader));
+  
+  //make string stream and convert uint32_t to string
+  stringstream ss;
+  string magicNumString;
+   ss << (myHeader->magicNumber);
+   ss >> magicNumString;
+   magicNumString = "Magic: " + magicNumString;
+  
+  setCDKMatrixCell(myMatrix, 1, 1, magicNumString.c_str() );
+  
+  /*
   for(int i = 2; i < 6; i++){
-    setCDKMatrixCell(myMatrix, i, 1, "strlen: " + myRecord->strLength);
-    setCDKMatrixCell(myMatrix, i, 2, ""+myRecord->stringBuffer;
+    setCDKMatrixCell(myMatrix, i, 1, "strlen: " + unsigned(myRecord->strLength));
+    setCDKMatrixCell(myMatrix, i, 2, myRecord->stringBuffer);
   }
-  setCDKMatrixCell(myMatrix, 2, 2, "Test Message");
-  setCDKMatrixCell(myMatrix, 2, 3, "GREMLINS" );
+  */
   drawCDKMatrix(myMatrix, true);    /* required  */
-
+ 
   /* So we can see results, pause until a key is pressed. */
   unsigned char x;
   cin >> x;
