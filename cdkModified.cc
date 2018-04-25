@@ -19,17 +19,21 @@
 #define MATRIX_WIDTH 3
 #define BOX_WIDTH 15
 #define MATRIX_NAME_STRING "Binary File Contents"
-
 using namespace std;
 
 //header class
 class BinaryFileHeader{
-
 public:
   uint32_t magicNumber; //feedface I hope
   uint32_t versionNumber;
   uint64_t numRecords;
 
+};
+
+class BinaryFileRecord{
+public:
+  uint8_t strLength;
+  char stringBuffer[maxRecordStringLength];
 };
 
 //create a constant for the max string length of the 
@@ -92,7 +96,11 @@ int main()
     return 0;
   }
 
+
+  //create instances of the header and record classes to read into
   BinaryFileHeader *myHeader = new BinaryFileHeader();
+  BinaryFileRecord *myRecord = new BinaryFileRecord();
+
 
   binInFile.read((char*) myHeader, sizeof(BinaryFileHeader));
   if (myMatrix ==NULL)
@@ -106,6 +114,10 @@ int main()
 
   
   //setCDKMatrixCell(myMatrix, 1, 1, myHeader->magicNumber);
+  for(int i = 2; i < 6; i++){
+    setCDKMatrixCell(myMatrix, i, 1, "strlen: " + myRecord->strLength);
+    setCDKMatrixCell(myMatrix, i, 2, ""+myRecord->stringBuffer;
+  }
   setCDKMatrixCell(myMatrix, 2, 2, "Test Message");
   setCDKMatrixCell(myMatrix, 2, 3, "GREMLINS" );
   drawCDKMatrix(myMatrix, true);    /* required  */
