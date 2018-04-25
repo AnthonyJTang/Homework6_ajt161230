@@ -112,16 +112,45 @@ int main()
   string magicNumString;
    ss << (myHeader->magicNumber);
    ss >> magicNumString;
-   magicNumString = "Magic: " + magicNumString;
+  magicNumString = "Magic: " + magicNumString;
   
+  //clear string stream between uses
+  ss.clear();
+  string versionString;
+   ss << (myHeader->versionNumber);
+   ss >> versionString; 
+  versionString = "Version: " + versionString;
+
+  //clear string stream between uses
+  ss.clear();
+  string numRecordsString;
+  ss << (myHeader->numRecords);
+  ss >> numRecordsString;
+  numRecordsString = "NumRecords: " + numRecordsString;
+
   setCDKMatrixCell(myMatrix, 1, 1, magicNumString.c_str() );
+  setCDKMatrixCell(myMatrix, 1, 2, versionString.c_str() );
+  setCDKMatrixCell(myMatrix, 1, 3, numRecordsString.c_str() );
+ 
+  BinaryFileRecord *myRecord = new BinaryFileRecord();
   
-  /*
+  //string need to be out here
+  string strlenTemp;
+ 
+  //iterate through rows 2 though 5 and print the strlen and buffer
   for(int i = 2; i < 6; i++){
-    setCDKMatrixCell(myMatrix, i, 1, "strlen: " + unsigned(myRecord->strLength));
-    setCDKMatrixCell(myMatrix, i, 2, myRecord->stringBuffer);
+    //read with each iteration
+    binInFile.read((char*) myRecord, sizeof(BinaryFileRecord));
+
+    ss.clear();
+    ss << unsigned(myRecord->strLength);
+    ss >> strlenTemp;
+    strlenTemp = "strlen: " + strlenTemp;    
+    setCDKMatrixCell(myMatrix, i, 1, strlenTemp.c_str());
+    
+    ss.clear();
+    setCDKMatrixCell(myMatrix, i, 2, (myRecord->stringBuffer));
   }
-  */
   drawCDKMatrix(myMatrix, true);    /* required  */
  
   /* So we can see results, pause until a key is pressed. */
