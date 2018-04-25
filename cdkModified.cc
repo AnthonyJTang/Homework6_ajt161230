@@ -1,13 +1,6 @@
 /*
  * Modified CDK file
  *  Anthony Tang, ajt161230, 3377.502
- *
- * (
- * Original
- * File:   example1.cc
- * Author: Stephen Perkins
- * Email:  stephen.perkins@utdallas.edu
- * )
  */
 
 #include <iostream>
@@ -108,12 +101,16 @@ int main()
   binInFile.read((char*) myHeader, sizeof(BinaryFileHeader));
   
   //make string stream and convert uint32_t to string
-  stringstream ss;
+  //have different stringstreams for hexadecimal. (sh for hex, ss standard)
+  stringstream sh;
   string magicNumString;
-   ss << (myHeader->magicNumber);
-   ss >> magicNumString;
-  magicNumString = "Magic: " + magicNumString;
-  
+   sh << hex << (myHeader->magicNumber);
+   sh >> magicNumString;
+   magicNumString = "Magic:0x" + magicNumString + " ";
+   sh.clear();
+
+  stringstream ss;
+   //non hex string stream
   //clear string stream between uses
   ss.clear();
   string versionString;
